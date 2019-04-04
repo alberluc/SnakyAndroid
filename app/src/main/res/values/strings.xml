@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Snaky</string>
+    <string name="debug_creating">Creating...</string>
+    <string name="menu_title">Menu</string>
+    <string name="game_menu">Start game</string>
+</resources>
