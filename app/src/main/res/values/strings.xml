@@ -3,4 +3,6 @@
     <string name="debug_creating">Creating...</string>
     <string name="menu_title">Menu</string>
     <string name="game_menu">Start game</string>
+    <string name="game_state_lose">Perdu amigo</string>
+    <string name="game_replay">Recommencer</string>
 </resources>
