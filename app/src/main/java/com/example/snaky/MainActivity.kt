@@ -2,13 +2,10 @@ package com.example.snaky
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.MotionEventCompat
-import android.util.Log
 import android.view.*
 import com.example.snaky.view.SnakeGrid
 import android.support.v4.view.GestureDetectorCompat
 import com.example.snaky.listeners.DetectSwipeGestureListener
-import android.text.method.Touch.onTouchEvent
 import android.view.MotionEvent
 import com.example.snaky.dialog_fragment.MenuDialogFragment
 
@@ -32,11 +29,6 @@ class MainActivity : AppCompatActivity(), GameDelegate {
         Game.setup()
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        gestureDetectorCompat!!.onTouchEvent(event)
-        return true
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.game_menu, menu)
@@ -54,16 +46,25 @@ class MainActivity : AppCompatActivity(), GameDelegate {
         }
     }
 
-    override fun onGameStart() {
-        val itemStateGame = this.menu?.getItem(0)
-        itemStateGame?.setIcon(R.drawable.ic_restart)
-        Snake.countMoveTile = 1
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        gestureDetectorCompat!!.onTouchEvent(event)
+        return true
+    }
+
+    fun onSwipe(direction: AbstractShape.Direction) {
+        Snake.direction = direction
     }
 
     override fun onGameInit() {
         val itemStateGame = this.menu?.getItem(0)
         itemStateGame?.setIcon(R.drawable.ic_game)
+        Snake.init()
         snakeGrid?.clearTiles()
+    }
+
+    override fun onGameStart() {
+        val itemStateGame = this.menu?.getItem(0)
+        itemStateGame?.setIcon(R.drawable.ic_restart)
     }
 
     override fun onGameLose() {
@@ -73,12 +74,8 @@ class MainActivity : AppCompatActivity(), GameDelegate {
         dialog.show(supportFragmentManager, "MenuDialogFragment")
     }
 
-    override fun onUpdateAnimate() {
+    override fun onGameUpdate() {
         snakeGrid?.updateTiles()
         snakeGrid?.invalidate()
-    }
-
-    fun onSwipe(direction: AbstractShape.Direction) {
-        Snake.direction = direction
     }
 }

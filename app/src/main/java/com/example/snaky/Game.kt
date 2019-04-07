@@ -7,7 +7,7 @@ interface GameDelegate {
     fun onGameStart()
     fun onGameInit()
     fun onGameLose()
-    fun onUpdateAnimate()
+    fun onGameUpdate()
 }
 
 object Game: RedrawHandlerDelegate {
@@ -52,6 +52,6 @@ object Game: RedrawHandlerDelegate {
 
     override fun onLoopExecute() {
         Snake.move();
-        delegate?.onUpdateAnimate()
+        delegate?.onGameUpdate()
     }
 }

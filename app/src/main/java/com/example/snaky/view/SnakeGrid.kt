@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.res.Resources
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
+import android.util.Log
 import com.example.snaky.Game
+import com.example.snaky.Position
 import com.example.snaky.R
 import com.example.snaky.Snake
 
@@ -31,10 +33,11 @@ class SnakeGrid: GridView {
 
     override fun initTiles() {
         setFocusable(true)
-        var r: Resources = this.context.resources
+        val r: Resources = this.context.resources
         resetTileList(TILE_FOOD + 1)
-        loadTile(TILE_WALL, ResourcesCompat.getDrawable(r, R.drawable.ic_wall_snake, null)!!)
+        loadTile(TILE_WALL, ResourcesCompat.getDrawable(r, R.drawable.ic_frame_wall_1, null)!!)
         loadTile(TILE_SNAKE_HEAD, ResourcesCompat.getDrawable(r, R.drawable.ic_snake, null)!!)
+        loadTile(TILE_SNAKE_PART, ResourcesCompat.getDrawable(r, R.drawable.ic_snake_part, null)!!)
         loadTile(TILE_FOOD, ResourcesCompat.getDrawable(r, R.drawable.ic_apple, null)!!)
 
         Snake.posX = (nbTileX / 2) - 3
@@ -54,27 +57,25 @@ class SnakeGrid: GridView {
     }
 
     fun updateTiles() {
-        // Clear values
-        changeTilesValue(TILE_SNAKE_HEAD, TILE_EMPTY)
+        // Clear and draw last head positions in snake part
         changeTilesValue(TILE_SNAKE_PART, TILE_EMPTY)
-        // Reset values
+        for (position in Snake.getHeadPositions()) {
+            setTile(TILE_SNAKE_PART, position.x, position.y)
+        }
+        // Save current head position
+        val headPosition = Position(Snake.posX, Snake.posY)
+        Snake.addHeadPosition(headPosition)
+        // Clear and draw head position and handle the tile touched
+        changeTilesValue(TILE_SNAKE_HEAD, TILE_EMPTY)
         val tileTouched = setTile(TILE_SNAKE_HEAD, Snake.posX, Snake.posY)
         when (tileTouched) {
-            TILE_WALL -> {
-                setTile(TILE_WALL, Snake.posX, Snake.posY)
+            TILE_SNAKE_HEAD, TILE_WALL, TILE_SNAKE_PART -> {
                 Game.delegate?.onGameLose()
             }
             TILE_FOOD -> {
+                Snake.addPart()
                 changeTilesValue(TILE_FOOD, TILE_SNAKE_PART)
                 setRandomTile(TILE_FOOD)
-            }
-        }
-        for (part in Snake.parts) {
-            val tileTouched = setTile(TILE_SNAKE_HEAD, part.posX, part.posY)
-            when (tileTouched) {
-                TILE_SNAKE_HEAD or TILE_FOOD -> {
-                    Game.delegate?.onGameLose()
-                }
             }
         }
     }

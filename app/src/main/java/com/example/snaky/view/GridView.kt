@@ -16,7 +16,7 @@ import java.lang.Error
 abstract class GridView: View {
 
     private val LOG_TAG = GridView::class.java.name
-    private val TILE_DEFAULT_SIZE = 46
+    private val TILE_DEFAULT_SIZE = 56
     protected val TILE_EMPTY = -1
 
     private var mPaint: Paint? = null
@@ -94,7 +94,7 @@ abstract class GridView: View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         nbTileX = Math.floor((w / mTileSize).toDouble()).toInt()
-        nbTileY = Math.floor((h / mTileSize).toDouble()).toInt()
+        nbTileY = Math.floor((w / mTileSize).toDouble()).toInt()
 
         Log.d(LOG_TAG, "Nb tile - X: $nbTileX")
         Log.d(LOG_TAG, "Nb tile - Y: $nbTileY")
@@ -129,10 +129,9 @@ abstract class GridView: View {
     }
 
     fun getTileValue(x: Int, y: Int): Int? {
-        if (mGrid != null) {
-            return mGrid!![x][y]
+        return mGrid?.let {
+            it.getOrNull(x)?.getOrNull(y)
         }
-        return null
     }
 
     fun changeTilesValue(currentValue: Int, newValue: Int) {
@@ -162,11 +161,11 @@ abstract class GridView: View {
     }
 
     fun setRandomTile(value: Int) {
-        var tileValue: Int? = null
-        var randX: Double? = null
-        var randY: Double? = null
-        var x: Int? = null
-        var y: Int? = null
+        var tileValue: Int?
+        var randX: Double
+        var randY: Double
+        var x: Int
+        var y: Int
         do {
             randX = nbTileX.toDouble() / (Math.random() * nbTileX.toDouble())
             randY = nbTileY.toDouble() / (Math.random() * nbTileY.toDouble())
@@ -174,7 +173,7 @@ abstract class GridView: View {
             y =  Math.round(randY.toFloat())
             tileValue = getTileValue(x, y);
         } while (tileValue != TILE_EMPTY);
-        setTile(value, x!!, y!!);
+        setTile(value, x, y);
     }
 
     companion object {
