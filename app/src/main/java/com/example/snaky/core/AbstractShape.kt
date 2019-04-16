@@ -1,4 +1,4 @@
-package com.example.snaky
+package com.example.snaky.core
 
 abstract class AbstractShape() {
 

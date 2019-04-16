@@ -1,10 +1,9 @@
 package com.example.snaky.listeners
 
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
-import com.example.snaky.AbstractShape
-import com.example.snaky.MainActivity
+import com.example.snaky.core.AbstractShape
+import com.example.snaky.activites.MainActivity
 
 /**
  * Created by Jerry on 4/18/2018.

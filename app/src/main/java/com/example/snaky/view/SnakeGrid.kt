@@ -4,15 +4,10 @@ import android.content.Context
 import android.content.res.Resources
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
-import android.util.Log
-import com.example.snaky.Game
-import com.example.snaky.Position
+import com.example.snaky.core.Game
+import com.example.snaky.core.Position
 import com.example.snaky.R
-import com.example.snaky.Snake
-
-interface SnakeGridDelegate {
-
-}
+import com.example.snaky.core.Snake
 
 class SnakeGrid: GridView {
 
@@ -63,7 +58,8 @@ class SnakeGrid: GridView {
             setTile(TILE_SNAKE_PART, position.x, position.y)
         }
         // Save current head position
-        val headPosition = Position(Snake.posX, Snake.posY)
+        val headPosition =
+            Position(Snake.posX, Snake.posY)
         Snake.addHeadPosition(headPosition)
         // Clear and draw head position and handle the tile touched
         changeTilesValue(TILE_SNAKE_HEAD, TILE_EMPTY)

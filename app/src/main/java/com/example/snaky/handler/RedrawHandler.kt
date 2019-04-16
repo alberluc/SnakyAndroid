@@ -2,8 +2,7 @@ package com.structit.snake
 
 import android.os.Handler
 import android.os.Message
-import android.util.Log
-import com.example.snaky.Game
+import com.example.snaky.core.Game
 
 interface RedrawHandlerDelegate {
 

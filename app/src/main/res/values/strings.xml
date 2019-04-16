@@ -5,4 +5,6 @@
     <string name="game_menu">Start game</string>
     <string name="game_state_lose">Perdu amigo</string>
     <string name="game_replay">Recommencer</string>
+    <string name="score_btn">Ok</string>
+    <string name="score_indication">Ton nom :</string>
 </resources>

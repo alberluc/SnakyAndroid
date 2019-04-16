@@ -1,14 +1,7 @@
-package com.example.snaky
+package com.example.snaky.core
 
 import com.structit.snake.RedrawHandler
 import com.structit.snake.RedrawHandlerDelegate
-
-interface GameDelegate {
-    fun onGameStart()
-    fun onGameInit()
-    fun onGameLose()
-    fun onGameUpdate()
-}
 
 object Game: RedrawHandlerDelegate {
 
@@ -27,7 +20,7 @@ object Game: RedrawHandlerDelegate {
     }
 
     fun setState(state: Int) {
-        this.state = state
+        Game.state = state
         when (state) {
             STATE_RUN -> {
                 handler.start()
@@ -51,7 +44,7 @@ object Game: RedrawHandlerDelegate {
     }
 
     override fun onLoopExecute() {
-        Snake.move();
+        Snake.move()
         delegate?.onGameUpdate()
     }
 }

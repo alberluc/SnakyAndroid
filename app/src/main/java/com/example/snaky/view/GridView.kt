@@ -11,6 +11,7 @@ import android.view.View
 
 import android.widget.GridView
 import com.example.snaky.R
+import com.example.snaky.core.Position
 import java.lang.Error
 
 abstract class GridView: View {
@@ -22,9 +23,6 @@ abstract class GridView: View {
     private var mPaint: Paint? = null
     private var mTileList: Array<Bitmap?>? = null
     private var mGrid: Array<IntArray>? = null
-
-    protected var mNbTileX: Int = 40
-    protected var mNbTileY: Int = 40
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
         mPaint = Paint()
@@ -144,12 +142,12 @@ abstract class GridView: View {
         }
     }
 
-    fun getPositionsForValue(value: Int): ArrayList<Pair<Int, Int>> {
-        val positions: ArrayList<Pair<Int, Int>> = ArrayList()
+    fun getPositionsForValue(value: Int): ArrayList<Position> {
+        val positions: ArrayList<Position> = ArrayList()
         for (x in 0 until nbTileX) {
             for (y in 0 until nbTileY) {
                 if (mGrid!![x][y] == value) {
-                    positions.add(Pair(x, y));
+                    positions.add(Position(x, y))
                 }
             }
         }
@@ -167,13 +165,11 @@ abstract class GridView: View {
         var x: Int
         var y: Int
         do {
-            randX = nbTileX.toDouble() / (Math.random() * nbTileX.toDouble())
-            randY = nbTileY.toDouble() / (Math.random() * nbTileY.toDouble())
-            x = Math.round(randX.toFloat())
-            y =  Math.round(randY.toFloat())
-            tileValue = getTileValue(x, y);
-        } while (tileValue != TILE_EMPTY);
-        setTile(value, x, y);
+            x = (0..nbTileX).random()
+            y = (0..nbTileY).random()
+            tileValue = getTileValue(x, y)
+        } while (tileValue != TILE_EMPTY)
+        setTile(value, x, y)
     }
 
     companion object {
