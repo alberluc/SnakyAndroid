@@ -25,6 +25,9 @@ class ScoreAdapter(
         val valueText = rowView.findViewById(R.id.value_text) as TextView
         valueText.text = getItem(position).value.toString()
 
+        val userPos = rowView.findViewById(R.id.user_pos) as TextView
+        userPos.text = if (position + 1 > 1) "${position + 1}ème" else "1er"
+
         return rowView
     }
 

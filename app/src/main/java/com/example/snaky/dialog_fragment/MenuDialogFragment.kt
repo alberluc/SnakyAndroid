@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.view.View
 import android.widget.*
 import com.example.snaky.core.Game
 
@@ -12,7 +13,6 @@ import com.example.snaky.R
 import com.example.snaky.activites.MainActivity
 import com.example.snaky.core.Score
 import com.example.snaky.core.Snake
-import com.example.snaky.services.ScoreService
 import com.example.snaky.view.ScoreAdapter
 
 class MenuDialogFragment() : DialogFragment() {
@@ -50,11 +50,17 @@ class MenuDialogFragment() : DialogFragment() {
         val scoreUserValue = view.findViewById(R.id.score_user_value) as TextView
         scoreUserValue.text = Snake.getHeadPositions().count().toString()
 
-        val userName = view.findViewById(R.id.user_text) as EditText
+        val userNameEdit = view.findViewById(R.id.user_text_edit) as EditText
+        val userNameText = view.findViewById(R.id.user_text) as TextView
 
         scoreBtn = view.findViewById(R.id.valid_score)
         scoreBtn?.setOnClickListener {
-            activity?.addScore(Score(userName.text.toString(), Snake.getHeadPositions().count()))
+            val usernameString = userNameEdit.text.toString()
+            if (usernameString.isNotEmpty()) {
+                activity?.addScore(Score(usernameString, Snake.getHeadPositions().count()))
+                scoreBtn?.visibility = View.GONE
+                userNameText.visibility = View.VISIBLE
+            }
         }
 
         builder.setView(view)

@@ -4,20 +4,39 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:minHeight="35dp">
     <TextView
-            android:id="@+id/value_text"
+            android:id="@+id/user_pos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:layout_marginRight="10dp"
+            android:layout_weight=".33"
+            android:textAlignment="textStart"
+            android:text="1er"
+            android:gravity="start"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"/>
+    <TextView
+            android:id="@+id/value_text"
+            android:textColor="@color/colorAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".40"
+            android:textSize="16sp"
+            android:textAlignment="viewEnd"
             android:text="16"
-    />
+            android:gravity="end"/>
     <TextView
         android:id="@+id/user_text"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
+        android:textAlignment="viewEnd"
+        android:textSize="16sp"
         android:text="Lucien"
-    />
+        android:layout_marginRight="10dp"
+        android:gravity="end"/>
 </LinearLayout>

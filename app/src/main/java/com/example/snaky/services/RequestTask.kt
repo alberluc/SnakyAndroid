@@ -3,6 +3,7 @@ package com.example.snaky.services
 import android.os.AsyncTask
 import android.os.Build
 import android.support.annotation.RequiresApi
+import android.util.Log
 import android.webkit.CookieManager
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
@@ -10,6 +11,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
 import java.io.StringReader
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -31,7 +33,11 @@ class RequestTask(private val requestHandler: RequestHandler): AsyncTask<URL, Vo
             val cookieManager = CookieManager.getInstance()
             val cookieVal = cookieManager.getCookie("Snake")
             it.setRequestProperty("Cookie", cookieVal)
-            it.connect()
+            try {
+                it.connect()
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message)
+            }
             if (it.responseCode == HttpURLConnection.HTTP_OK) {
                 val reader = BufferedReader(InputStreamReader(it.inputStream) as Reader)
                 val buffer = StringBuffer()
