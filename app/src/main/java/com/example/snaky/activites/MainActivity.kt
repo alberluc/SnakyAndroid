@@ -128,14 +128,15 @@ class MainActivity : AppCompatActivity(), GameDelegate {
         return true
     }
 
-    fun onSwipe(direction: AbstractShape.Direction) {
-        Snake.direction = direction
+    fun onSwipe(direction: Direction) {
+        Game.userSnake.direction = direction
     }
 
     override fun onGameInit() {
         val itemStateGame = this.menu?.getItem(0)
         itemStateGame?.setIcon(R.drawable.ic_game)
-        Snake.init()
+        Game.userSnake.init()
+        Game.botsSnake.forEach { it.init() }
         snakeGrid?.clearTiles()
     }
 
@@ -146,11 +147,15 @@ class MainActivity : AppCompatActivity(), GameDelegate {
 
     override fun onGameLose() {
         Game.handler.stop()
-        Snake.countMoveTile = 0
+        Game.snakes.forEach { it.countMoveTile = 0 }
         triggerScoreService(ScoreService.ACTION_GET_SCORES)
 
         menuDialog = MenuDialogFragment(this)
         menuDialog!!.show(supportFragmentManager, "MenuDialogFragment")
+    }
+
+    override fun onGamePreUpdate() {
+        snakeGrid?.onGamePreUpdate()
     }
 
     override fun onGameUpdate() {

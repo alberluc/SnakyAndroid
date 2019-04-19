@@ -1,10 +1,11 @@
 package com.example.snaky.core
 
-object Snake: AbstractShape() {
+class Snake: AbstractShape() {
 
     private var headPositions: ArrayList<Position> = ArrayList()
-
     private var countParts: Int = 0
+
+    var ia = IA(this)
 
     fun addPart() {
         countParts++

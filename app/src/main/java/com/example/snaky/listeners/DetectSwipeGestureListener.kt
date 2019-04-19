@@ -2,8 +2,8 @@ package com.example.snaky.listeners
 
 import android.view.GestureDetector
 import android.view.MotionEvent
-import com.example.snaky.core.AbstractShape
 import com.example.snaky.activites.MainActivity
+import com.example.snaky.core.Direction
 
 /**
  * Created by Jerry on 4/18/2018.
@@ -26,16 +26,16 @@ class DetectSwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
         // Only when swipe distance between minimal and maximal distance value then we treat it as effective swipe
         if (deltaXAbs >= MIN_SWIPE_DISTANCE_X && deltaXAbs <= MAX_SWIPE_DISTANCE_X) {
             if (deltaX > 0) {
-                activity?.onSwipe(AbstractShape.Direction.Left)
+                activity?.onSwipe(Direction.Left)
             } else {
-                activity?.onSwipe(AbstractShape.Direction.Right)
+                activity?.onSwipe(Direction.Right)
             }
         }
         if (deltaYAbs >= MIN_SWIPE_DISTANCE_Y && deltaYAbs <= MAX_SWIPE_DISTANCE_Y) {
             if (deltaY > 0) {
-                activity?.onSwipe(AbstractShape.Direction.Up)
+                activity?.onSwipe(Direction.Up)
             } else {
-                activity?.onSwipe(AbstractShape.Direction.Down)
+                activity?.onSwipe(Direction.Down)
             }
         }
         return true

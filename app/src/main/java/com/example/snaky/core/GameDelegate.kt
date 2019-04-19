@@ -5,4 +5,5 @@ interface GameDelegate {
     fun onGameInit()
     fun onGameLose()
     fun onGameUpdate()
+    fun onGamePreUpdate()
 }

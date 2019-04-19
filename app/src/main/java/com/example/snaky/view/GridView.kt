@@ -18,7 +18,8 @@ abstract class GridView: View {
 
     private val LOG_TAG = GridView::class.java.name
     private val TILE_DEFAULT_SIZE = 56
-    protected val TILE_EMPTY = -1
+
+    val TILE_EMPTY = -1
 
     private var mPaint: Paint? = null
     private var mTileList: Array<Bitmap?>? = null
@@ -126,6 +127,10 @@ abstract class GridView: View {
         return null
     }
 
+    fun getTileValue(position: Position): Int? {
+        return getTileValue(position.x, position.y)
+    }
+
     fun getTileValue(x: Int, y: Int): Int? {
         return mGrid?.let {
             it.getOrNull(x)?.getOrNull(y)
@@ -158,7 +163,7 @@ abstract class GridView: View {
         return mGrid!![x][y] == TILE_EMPTY
     }
 
-    fun setRandomTile(value: Int) {
+    fun setRandomTile(value: Int): Position {
         var tileValue: Int?
         var randX: Double
         var randY: Double
@@ -170,6 +175,22 @@ abstract class GridView: View {
             tileValue = getTileValue(x, y)
         } while (tileValue != TILE_EMPTY)
         setTile(value, x, y)
+
+        return Position(x, y)
+    }
+
+    fun getDistance(value1: Int, value2: Int): Pair<Int, Int> {
+        val pos1 = getPositionsForValue(value1)
+        val pos2 = getPositionsForValue(value2)
+
+        return getDistance(pos1[0], pos2[0])
+    }
+
+    fun getDistance(value1: Position, value2: Position): Pair<Int, Int> {
+        return Pair<Int, Int>(
+            value2.x - value1.x,
+            value2.y - value1.y
+        )
     }
 
     companion object {

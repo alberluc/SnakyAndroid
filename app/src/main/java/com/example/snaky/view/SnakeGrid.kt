@@ -11,34 +11,31 @@ import com.example.snaky.core.Snake
 
 class SnakeGrid: GridView {
 
-    private val TILE_WALL: Int = 0;
-    private val TILE_SNAKE_HEAD: Int = 1;
-    private val TILE_SNAKE_PART: Int = 2;
-    private val TILE_SNAKE_IA_HEAD: Int = 3;
-    private val TILE_SNAKE_IA_PART: Int = 4;
-    private val TILE_FOOD: Int = 5;
+    val TILE_WALL: Int = 0
+    val TILE_SNAKE_HEAD: Int = 1
+    val TILE_SNAKE_PART: Int = 2
+    val TILE_SNAKE_IA_HEAD: Int = 3
+    val TILE_SNAKE_IA_PART: Int = 4
+    val TILE_FOOD: Int = 5
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int): super(context, attrs, defStyle) {
-        // initTiles()
-    }
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int): super(context, attrs, defStyle) {}
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
-        // initTiles()
-    }
+    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {}
 
     override fun initTiles() {
+        if (nbTileX == 0 || nbTileX == 0) return
+
         setFocusable(true)
         val r: Resources = this.context.resources
         resetTileList(TILE_FOOD + 1)
+
         loadTile(TILE_WALL, ResourcesCompat.getDrawable(r, R.drawable.ic_frame_wall_1, null)!!)
         loadTile(TILE_SNAKE_HEAD, ResourcesCompat.getDrawable(r, R.drawable.ic_snake, null)!!)
         loadTile(TILE_SNAKE_PART, ResourcesCompat.getDrawable(r, R.drawable.ic_snake_part, null)!!)
+        loadTile(TILE_SNAKE_IA_HEAD, ResourcesCompat.getDrawable(r, R.drawable.ic_snake_ia, null)!!)
+        loadTile(TILE_SNAKE_IA_PART, ResourcesCompat.getDrawable(r, R.drawable.ic_snake_part_ia, null)!!)
         loadTile(TILE_FOOD, ResourcesCompat.getDrawable(r, R.drawable.ic_apple, null)!!)
 
-        Snake.posX = (nbTileX / 2) - 3
-        Snake.posY = (nbTileY / 2) - 3
-
-        setTile(TILE_SNAKE_HEAD, Snake.posX, Snake.posY)
         setTile(TILE_FOOD, (nbTileX / 2) + 3, (nbTileY / 2) + 3)
 
         for (x in 0..nbTileX - 1) {
@@ -49,30 +46,48 @@ class SnakeGrid: GridView {
             setTile(TILE_WALL, 0, y)
             setTile(TILE_WALL, nbTileX -1, y)
         }
+
+        initSnake(Game.userSnake, TILE_SNAKE_HEAD)
+        Game.botsSnake.forEach { initSnake(it, TILE_SNAKE_IA_HEAD) }
+    }
+
+    fun initSnake(snake: Snake, headTile: Int) {
+        val position = this.setRandomTile(headTile)
+        snake.position = position
+
+        setTile(headTile, snake.position.x, snake.position.y)
     }
 
     fun updateTiles() {
+        updateSnake(Game.userSnake, TILE_SNAKE_HEAD, TILE_SNAKE_PART)
+        Game.botsSnake.forEach { bot -> updateSnake(bot, TILE_SNAKE_IA_HEAD, TILE_SNAKE_IA_PART) }
+    }
+
+    fun updateSnake(snake: Snake, headTile: Int, bodyTile: Int) {
         // Clear and draw last head positions in snake part
-        changeTilesValue(TILE_SNAKE_PART, TILE_EMPTY)
-        for (position in Snake.getHeadPositions()) {
-            setTile(TILE_SNAKE_PART, position.x, position.y)
+        changeTilesValue(bodyTile, TILE_EMPTY)
+        for (position in snake.getHeadPositions()) {
+            setTile(bodyTile, position.x, position.y)
         }
         // Save current head position
-        val headPosition =
-            Position(Snake.posX, Snake.posY)
-        Snake.addHeadPosition(headPosition)
+        val headPosition = Position(snake.position.x, snake.position.y)
+        snake.addHeadPosition(headPosition)
         // Clear and draw head position and handle the tile touched
-        changeTilesValue(TILE_SNAKE_HEAD, TILE_EMPTY)
-        val tileTouched = setTile(TILE_SNAKE_HEAD, Snake.posX, Snake.posY)
+        changeTilesValue(headTile, TILE_EMPTY)
+        val tileTouched = setTile(headTile, snake.position.x, snake.position.y)
         when (tileTouched) {
-            TILE_SNAKE_HEAD, TILE_WALL, TILE_SNAKE_PART -> {
+            TILE_SNAKE_HEAD, TILE_SNAKE_IA_HEAD, TILE_WALL, TILE_SNAKE_PART, TILE_SNAKE_IA_PART -> {
                 Game.delegate?.onGameLose()
             }
             TILE_FOOD -> {
-                Snake.addPart()
+                snake.addPart()
                 changeTilesValue(TILE_FOOD, TILE_SNAKE_PART)
                 setRandomTile(TILE_FOOD)
             }
         }
+    }
+
+    fun onGamePreUpdate() {
+        Game.botsSnake.forEach { bot -> bot.ia.play(this) }
     }
 }

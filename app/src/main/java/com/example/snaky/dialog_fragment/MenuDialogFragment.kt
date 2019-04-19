@@ -48,7 +48,7 @@ class MenuDialogFragment() : DialogFragment() {
         scoreList!!.adapter = scoreAdapter
 
         val scoreUserValue = view.findViewById(R.id.score_user_value) as TextView
-        scoreUserValue.text = Snake.getHeadPositions().count().toString()
+        scoreUserValue.text = Game.userSnake.getHeadPositions().count().toString()
 
         val userNameEdit = view.findViewById(R.id.user_text_edit) as EditText
         val userNameText = view.findViewById(R.id.user_text) as TextView
@@ -57,7 +57,7 @@ class MenuDialogFragment() : DialogFragment() {
         scoreBtn?.setOnClickListener {
             val usernameString = userNameEdit.text.toString()
             if (usernameString.isNotEmpty()) {
-                activity?.addScore(Score(usernameString, Snake.getHeadPositions().count()))
+                activity?.addScore(Score(usernameString, Game.userSnake.getHeadPositions().count()))
                 scoreBtn?.visibility = View.GONE
                 userNameText.visibility = View.VISIBLE
             }

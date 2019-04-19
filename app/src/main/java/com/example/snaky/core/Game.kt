@@ -12,6 +12,12 @@ object Game: RedrawHandlerDelegate {
     var delegate: GameDelegate? = null
     var handler = RedrawHandler()
 
+    val userSnake = Snake()
+    val botsSnake = arrayListOf(Snake())
+
+    val snakes: List<Snake>
+        get() = arrayListOf(userSnake) + botsSnake
+
     private var state: Int = STATE_INIT
 
     fun toggleState() {
@@ -44,7 +50,9 @@ object Game: RedrawHandlerDelegate {
     }
 
     override fun onLoopExecute() {
-        Snake.move()
+        delegate?.onGamePreUpdate()
+        // userSnake.move()
+        botsSnake.forEach { it.move() }
         delegate?.onGameUpdate()
     }
 }
