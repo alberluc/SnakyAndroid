@@ -8,8 +8,6 @@ class IA (val snake: Snake) {
 
     var directions = Direction.values().toMutableList()
 
-    var path = ArrayList<Position>()
-
     fun play(grid: SnakeGrid) {
         val nextDistances = HashMap<Direction, Int>()
         for (i in 0 until directions.count()) {
@@ -17,8 +15,10 @@ class IA (val snake: Snake) {
                 nextDistances[directions[i]] = distance.first.absoluteValue + distance.second.absoluteValue
             }
         }
-        var minDist = nextDistances.minBy { it.value }
-        snake.direction = minDist!!.key
+        val minDist = nextDistances.minBy { it.value }
+        minDist?.let {
+            snake.direction = it.key
+        }
     }
 
     private fun getDistance(grid: SnakeGrid, direction: Direction): Pair<Int, Int>? {

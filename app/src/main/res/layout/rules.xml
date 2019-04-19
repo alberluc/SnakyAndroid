@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             android:layout_height="wrap_content">
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:gravity="center" tools:ignore="MissingConstraints">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vous êtes le joueur vert. Vous jouez contre le joueur bleu. Votre but est de manger les élements rouges."
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+    <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continuer"
+            android:layout_marginTop="40dp"/>
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>

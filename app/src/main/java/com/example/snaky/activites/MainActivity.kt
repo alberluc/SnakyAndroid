@@ -17,8 +17,8 @@ import android.view.MotionEvent
 import com.example.snaky.*
 import com.example.snaky.core.*
 import com.example.snaky.dialog_fragment.MenuDialogFragment
+import com.example.snaky.dialog_fragment.RulesDialogFragment
 import com.example.snaky.services.ScoreService
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(), GameDelegate {
@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity(), GameDelegate {
 
     override fun onStart() {
         super.onStart()
+
+        val rulesDialog = RulesDialogFragment(this)
+        rulesDialog.show(supportFragmentManager, "RulesDialogFragment")
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             ActivityCompat.requestPermissions(this, arrayOf(
                 android.Manifest.permission.INTERNET,

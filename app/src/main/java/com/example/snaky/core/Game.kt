@@ -51,7 +51,7 @@ object Game: RedrawHandlerDelegate {
 
     override fun onLoopExecute() {
         delegate?.onGamePreUpdate()
-        // userSnake.move()
+        userSnake.move()
         botsSnake.forEach { it.move() }
         delegate?.onGameUpdate()
     }
